@@ -33,6 +33,10 @@ android {
         }
     }
 
+    buildTypes.each {
+        it.buildConfigField 'String', 'QUANDL_API_KEY', MyQuandlApiKey
+    }
+
     //noinspection GroovyMissingReturnStatement
     lintOptions {
         warning 'InvalidPackage'

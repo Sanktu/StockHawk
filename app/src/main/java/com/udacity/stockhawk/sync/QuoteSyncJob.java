@@ -10,7 +10,13 @@ import android.icu.math.BigDecimal;
 import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.design.widget.Snackbar;
+import android.widget.Toast;
 
+import com.udacity.stockhawk.BuildConfig;
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 
@@ -65,13 +71,17 @@ public final class QuoteSyncJob {
         HttpUrl.Builder httpUrl = HttpUrl.parse(QUANDL_ROOT+symbol+".json").newBuilder();
         httpUrl.addQueryParameter("column_index", "4")  //closing price
                 .addQueryParameter("start_date", formatter.format(startDate))
-                .addQueryParameter("end_date", formatter.format(endDate));
+                .addQueryParameter("end_date", formatter.format(endDate))
+                .addQueryParameter("api_key", BuildConfig.QUANDL_API_KEY);
         return httpUrl.build();
     }
 
-    static ContentValues processStock(JSONObject jsonObject) throws JSONException{
+    static ContentValues processStock(JSONObject jsonObject, String stock) throws JSONException{
 
         String stockSymbol = jsonObject.getString("dataset_code");
+
+        if (stockSymbol == null)
+            return null;
 
         JSONArray historicData = jsonObject.getJSONArray("data");
 
@@ -81,7 +91,7 @@ public final class QuoteSyncJob {
 
         historyBuilder = new StringBuilder();
 
-        for (int i = 0; i<historicData.length(); i++) {
+        for (int i = 0; i < historicData.length(); i++) {
             JSONArray array = historicData.getJSONArray(i);
             // Append date
             historyBuilder.append(array.get(0));
@@ -103,6 +113,8 @@ public final class QuoteSyncJob {
 
     static void getQuotes(final Context context) {
 
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+
         Timber.d("Running sync job");
 
         historyBuilder = new StringBuilder();
@@ -111,7 +123,7 @@ public final class QuoteSyncJob {
 
             Set<String> stockPref = PrefUtils.getStocks(context);
 
-            for (String stock : stockPref) {
+            for (final String stock : stockPref) {
                 Request request = new Request.Builder()
                         .url(createQuery(stock)).build();
 
@@ -125,11 +137,27 @@ public final class QuoteSyncJob {
                     public void onResponse(Call call, Response response) throws IOException {
                         try {
                             String body = response.body().string();
+                            System.out.println(body);
                             JSONObject jsonObject = new JSONObject(body);
-                            ContentValues quotes = processStock(jsonObject.getJSONObject("dataset"));
+                            ContentValues quotes = processStock(jsonObject
+                                    .getJSONObject("dataset"), stock);
 
                             context.getContentResolver().insert(Contract.Quote.URI,quotes);
-                        } catch(JSONException ex){}
+                        } catch(JSONException ex) {
+                            System.out.println(response);
+                            int code = response.code();
+                            if (code == 404 || code == 400) {
+                                PrefUtils.removeStock(context, stock);
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(context, stock + " is " +
+                                                "invalid", Toast
+                                                .LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
                     }
                 });
 
@@ -165,7 +193,7 @@ public final class QuoteSyncJob {
     public static synchronized void initialize(final Context context) {
 
         schedulePeriodic(context);
-        syncImmediately(context);
+//        syncImmediately(context);
 
     }
 
@@ -189,8 +217,6 @@ public final class QuoteSyncJob {
             JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
             scheduler.schedule(builder.build());
-
-
         }
     }
 
