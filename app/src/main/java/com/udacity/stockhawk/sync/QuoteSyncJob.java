@@ -49,7 +49,7 @@ public final class QuoteSyncJob {
 
     private static final int ONE_OFF_ID = 2;
     private static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
-    private static final int PERIOD = 300000;
+    private static final int PERIOD = 3000000;
     private static final int INITIAL_BACKOFF = 10000;
     private static final int PERIODIC_ID = 1;
     private static final int YEARS_OF_HISTORY = 2;
@@ -79,6 +79,12 @@ public final class QuoteSyncJob {
     static ContentValues processStock(JSONObject jsonObject, String stock) throws JSONException{
 
         String stockSymbol = jsonObject.getString("dataset_code");
+        String name = jsonObject.getString("name");
+        if (name.indexOf('(') != -1)
+            name = name.substring(0, name.indexOf('(') - 1);
+        else
+            name = "Undefined";
+        System.out.println(name);
 
         if (stockSymbol == null)
             return null;
@@ -89,24 +95,25 @@ public final class QuoteSyncJob {
         double change = price - historicData.getJSONArray(1).getDouble(1);
         double percentChange = 100 * (( price - historicData.getJSONArray(1).getDouble(1) ) / historicData.getJSONArray(1).getDouble(1));
 
-        historyBuilder = new StringBuilder();
-
-        for (int i = 0; i < historicData.length(); i++) {
-            JSONArray array = historicData.getJSONArray(i);
-            // Append date
-            historyBuilder.append(array.get(0));
-            historyBuilder.append(", ");
-            // Append close
-            historyBuilder.append(array.getDouble(1));
-            historyBuilder.append("\n");
-        }
+//        historyBuilder = new StringBuilder();
+//
+//        for (int i = 0; i < historicData.length(); i++) {
+//            JSONArray array = historicData.getJSONArray(i);
+//            // Append date
+//            historyBuilder.append(array.get(0));
+//            historyBuilder.append(", ");
+//            // Append close
+//            historyBuilder.append(array.getDouble(1));
+//            historyBuilder.append("\n");
+//        }
 
         ContentValues quoteCV = new ContentValues();
         quoteCV.put(Contract.Quote.COLUMN_SYMBOL, stockSymbol);
+        quoteCV.put(Contract.Quote.COLUMN_NAME, name);
         quoteCV.put(Contract.Quote.COLUMN_PRICE, price);
         quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
         quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
-        quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
+        quoteCV.put(Contract.Quote.COLUMN_HISTORY, "Placeholder");
 
         return quoteCV;
     }
@@ -116,8 +123,6 @@ public final class QuoteSyncJob {
         final Handler mHandler = new Handler(Looper.getMainLooper());
 
         Timber.d("Running sync job");
-
-        historyBuilder = new StringBuilder();
 
         try {
 
