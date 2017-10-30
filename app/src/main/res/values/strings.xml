@@ -38,5 +38,6 @@
     <string name="click_add_stock" translatable="true">Click to add a
         stock</string>
     <string name="stock_value_chart">Stock Value Chart</string>
+    <string name="stock_already_in_list">%s is already in your list</string>
 
 </resources>
