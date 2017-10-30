@@ -39,5 +39,7 @@
         stock</string>
     <string name="stock_value_chart">Stock Value Chart</string>
     <string name="stock_already_in_list">%s is already in your list</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
