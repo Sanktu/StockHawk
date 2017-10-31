@@ -89,8 +89,10 @@ public class AddStockDialog extends DialogFragment {
                 Contract.Quote.COLUMN_SYMBOL + "= ?",
                 new String[] {myStock},
                 null);
-        if (c.getCount() == 0)
+        if (c != null && c.getCount() == 0) {
+            c.close();
             return false;
+        }
         return true;
     }
 

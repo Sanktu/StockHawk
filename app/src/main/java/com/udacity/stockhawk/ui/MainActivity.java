@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean networkUp() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+            NetworkInfo networkInfo = cm != null ? cm.getActiveNetworkInfo() : null;
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
     @Override

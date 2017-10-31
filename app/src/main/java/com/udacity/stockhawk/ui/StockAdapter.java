@@ -14,13 +14,8 @@ import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.MyNumberFormat;
 import com.udacity.stockhawk.data.PrefUtils;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 

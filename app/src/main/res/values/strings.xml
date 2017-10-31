@@ -26,9 +26,9 @@
     <string name="dialog_cancel" translatable="true">Cancel</string>
     <string name="dialog_add" translatable="true">Add</string>
 
-    <string name="error_no_network" translatable="true">No network connectivity!
-        Will load stock cursor when the network is available.</string>
-    <string name="error_no_stocks" translatable="true">No stocks added! Hit the
+    <string name="error_no_network" translatable="true">No network
+        connectivity!\nWill load stock cursor when the network is available.</string>
+    <string name="error_no_stocks" translatable="true">No stocks added!\nHit the
         floating action button to add one.</string>
 
     <string name="toast_stock_added_no_connectivity" translatable="true">Symbol
@@ -37,11 +37,10 @@
         network available.</string>
     <string name="click_add_stock" translatable="true">Click to add a
         stock</string>
-    <string name="stock_value_chart">Stock Value Chart</string>
-    <string name="stock_already_in_list">%s is already in your list</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="price_of_stock">Price of stock is %s</string>
-    <string name="stock_evolution">Currently displaying stock evolution in %s</string>
+    <string name="stock_value_chart" translatable="true">Stock Value Chart</string>
+    <string name="stock_already_in_list" translatable="true">%s is already in your list</string>
+    <string name="price_of_stock" translatable="true">Price of stock is %s</string>
+    <string name="stock_evolution" translatable="true">Currently displaying
+    stock evolution in %s</string>
 
 </resources>

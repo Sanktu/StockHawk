@@ -12,10 +12,9 @@ public final class MyNumberFormat {
 
     public static DecimalFormat dollarFormat() {
 
-        DecimalFormat df = (DecimalFormat) NumberFormat
+        return (DecimalFormat) NumberFormat
                 .getCurrencyInstance
                 (Locale.US);
-        return df;
     }
 
     public static DecimalFormat dollarFormatWithPlus() {

@@ -9,8 +9,6 @@ import android.webkit.WebView;
 
 import com.udacity.stockhawk.R;
 
-import java.net.URL;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

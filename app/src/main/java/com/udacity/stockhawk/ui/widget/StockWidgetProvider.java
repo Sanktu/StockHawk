@@ -23,8 +23,6 @@ import com.udacity.stockhawk.ui.MainActivity;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class StockWidgetProvider extends AppWidgetProvider {
 
-    private static final String ACTION_DETAIL_STOCK = "com.udacity.stockhawk" +
-            ".ACTION_DETAIL_STOCK";;
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // Perform this loop procedure for each App Widget that belongs to this provider
@@ -64,7 +62,6 @@ public class StockWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-        super.onReceive(context, intent);
         System.out.println("Intent ==========> " + intent.getAction());
         if (QuoteSyncJob.ACTION_DATA_UPDATED.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -72,11 +69,9 @@ public class StockWidgetProvider extends AppWidgetProvider {
                     new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R
                     .id.widget_list);
+            System.out.println("WIDGET! DATA CHANGED!");
         }
-//        if (ACTION_DETAIL_STOCK.equals(intent.getAction())) {
-//            System.out.println("Did we clicked??? " + intent
-//                    .getStringArrayExtra(Intent.EXTRA_TEXT)[0]);
-//        }
+        super.onReceive(context, intent);
     }
 
     /**
