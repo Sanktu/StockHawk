@@ -41,5 +41,7 @@
     <string name="stock_already_in_list">%s is already in your list</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="price_of_stock">Price of stock is %s</string>
+    <string name="stock_evolution">Currently displaying stock evolution in %s</string>
 
 </resources>
