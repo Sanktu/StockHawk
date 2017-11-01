@@ -42,5 +42,6 @@
     <string name="price_of_stock" translatable="true">Price of stock is %s</string>
     <string name="stock_evolution" translatable="true">Currently displaying
     stock evolution in %s</string>
+    <string name="stock_is_invalid">%s is invalid</string>
 
 </resources>

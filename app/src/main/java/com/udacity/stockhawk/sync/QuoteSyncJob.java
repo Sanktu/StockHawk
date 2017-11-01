@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.udacity.stockhawk.BuildConfig;
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 
@@ -133,8 +134,10 @@ public final class QuoteSyncJob {
                                 mHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(context, stock + " is " +
-                                                "invalid", Toast
+                                        Toast.makeText(context, context
+                                                .getString(R.string
+                                                        .stock_is_invalid,
+                                                        stock), Toast
                                                 .LENGTH_SHORT).show();
                                     }
                                 });

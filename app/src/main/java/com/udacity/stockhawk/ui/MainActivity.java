@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onClick(String symbol, String tag) {
-        Timber.d("Symbol clicked: %s", symbol);
-        Toast.makeText(this, tag + " clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, DetailStock.class);
         intent.putExtra(Intent.EXTRA_TEXT, new String[]{symbol, tag});
         // Verify that the intent will resolve to an activity
